@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
+const API = "https://ecommerce-backend-w1db.onrender.com";
 
 function Signup() {
   const [name, setName] = useState("");
@@ -12,31 +14,25 @@ function Signup() {
 
   const handleSignup = async () => {
     try {
-      await axios.post(
-        "https://ecommerce-backend-w1db.onrender.com/api/users/signup",
-        { name, email, password }
-      );
+      await axios.post(`${API}/api/users/register`, {
+        name,
+        email,
+        password,
+      });
 
-      setMessage("Signup successful! Redirecting...");
-
-      setTimeout(() => {
-        navigate("/login");
-      }, 1500);
+      navigate("/login");
     } catch {
-      setMessage("Signup failed. Try again.");
+      setMessage("Signup failed");
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-
       <div className="bg-white shadow-xl rounded-xl p-8 w-full max-w-md">
-
-        <h2 className="text-3xl font-bold mb-6 text-center">
-          Signup
-        </h2>
+        <h2 className="text-3xl font-bold mb-6 text-center">Signup</h2>
 
         <input
+          type="text"
           placeholder="Name"
           className="w-full p-3 border rounded mb-4"
           onChange={(e) => setName(e.target.value)}
@@ -58,29 +54,22 @@ function Signup() {
 
         <button
           onClick={handleSignup}
-          className="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700"
+          className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700"
         >
           Signup
         </button>
 
         {message && (
-          <p className="mt-3 text-center text-gray-600">
-            {message}
-          </p>
+          <p className="text-red-500 mt-3 text-center">{message}</p>
         )}
 
         <p className="mt-4 text-center text-gray-600">
           Already have an account?{" "}
-          <Link
-            to="/login"
-            className="text-blue-600 hover:underline"
-          >
+          <Link to="/login" className="text-blue-600 hover:underline">
             Login
           </Link>
         </p>
-
       </div>
-
     </div>
   );
 }

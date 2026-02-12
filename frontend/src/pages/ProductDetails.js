@@ -1,62 +1,59 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+
+const API = "https://ecommerce-backend-w1db.onrender.com";
 
 function ProductDetails() {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
   const { addToCart } = useCart();
+  const [product, setProduct] = useState(null);
 
   useEffect(() => {
     axios
-      .get("https://ecommerce-backend-w1db.onrender.com/api/products")
-      .then((res) => {
-        const found = res.data.find(
-          (p) => p._id === id
-        );
-        setProduct(found);
-      });
+      .get(`${API}/api/products/${id}`)
+      .then((res) => setProduct(res.data))
+      .catch(console.error);
   }, [id]);
 
-  if (!product) return <p>Loading...</p>;
+  if (!product) {
+    return (
+      <div className="p-8">Loading product...</div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
 
-      <div className="bg-white rounded shadow p-8 grid md:grid-cols-2 gap-8">
+      <div className="bg-white rounded-xl shadow p-6 max-w-xl mx-auto">
 
         <img
-  src="https://picsum.photos/500"
-  alt={product.name}
-  className="w-full rounded"
-/>
+          src={product.image}
+          alt={product.name}
+          className="w-full h-64 object-cover rounded-lg"
+        />
 
+        <h2 className="text-2xl font-bold mt-4">
+          {product.name}
+        </h2>
 
-        <div>
-          <h2 className="text-3xl font-bold mb-4">
-            {product.name}
-          </h2>
+        <p className="text-gray-600 mt-2">
+          {product.description}
+        </p>
 
-          <p className="text-xl text-green-600 mb-4">
-            ${product.price}
-          </p>
+        <p className="text-blue-600 font-bold mt-3">
+          ${product.price}
+        </p>
 
-          <p className="text-gray-600 mb-6">
-            {product.description}
-          </p>
-
-          <button
-            onClick={() => addToCart(product)}
-            className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700"
-          >
-            Add to Cart
-          </button>
-
-        </div>
+        <button
+          onClick={() => addToCart(product)}
+          className="mt-4 w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700"
+        >
+          Add to Cart
+        </button>
 
       </div>
-
     </div>
   );
 }

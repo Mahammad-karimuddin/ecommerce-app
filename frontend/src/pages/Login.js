@@ -2,6 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
+const API = "https://ecommerce-backend-w1db.onrender.com";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,44 +13,35 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post(
-        "https://ecommerce-backend-w1db.onrender.com/api/users/login",
-
-        { email, password }
-      );
+      const res = await axios.post(`${API}/api/users/login`, {
+        email,
+        password,
+      });
 
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("userEmail", email);
-
       navigate("/dashboard");
-    } catch (error) {
+    } catch {
       setMessage("Invalid email or password");
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-
       <div className="bg-white shadow-xl rounded-xl p-8 w-full max-w-md">
-
-        <h2 className="text-3xl font-bold mb-6 text-center">
-          Login
-        </h2>
+        <h2 className="text-3xl font-bold mb-6 text-center">Login</h2>
 
         <input
           type="email"
           placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           className="w-full p-3 border rounded mb-4"
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
           type="password"
           placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           className="w-full p-3 border rounded mb-4"
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <button
@@ -59,23 +52,16 @@ function Login() {
         </button>
 
         {message && (
-          <p className="text-red-500 mt-3 text-center">
-            {message}
-          </p>
+          <p className="text-red-500 mt-3 text-center">{message}</p>
         )}
 
         <p className="mt-4 text-center text-gray-600">
           Don’t have an account?{" "}
-          <Link
-            to="/signup"
-            className="text-blue-600 hover:underline"
-          >
+          <Link to="/signup" className="text-blue-600 hover:underline">
             Signup
           </Link>
         </p>
-
       </div>
-
     </div>
   );
 }

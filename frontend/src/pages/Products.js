@@ -2,24 +2,24 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCart } from "../context/CartContext";
 
+const API = "https://ecommerce-backend-w1db.onrender.com";
+
 function Products() {
   const [products, setProducts] = useState([]);
   const { addToCart } = useCart();
 
   useEffect(() => {
     axios
-      .get("https://ecommerce-backend-w1db.onrender.com/api/products")
+      .get(`${API}/api/products`)
       .then((res) => setProducts(res.data))
-      .catch(console.error);
+      .catch((err) => console.error(err));
   }, []);
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
-
       <h2 className="text-3xl font-bold mb-6">Products</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
         {products.map((p) => (
           <div
             key={p._id}
@@ -32,7 +32,6 @@ function Products() {
             />
 
             <h3 className="text-xl font-semibold mt-3">{p.name}</h3>
-
             <p className="text-gray-600">${p.price}</p>
 
             <button
@@ -41,10 +40,8 @@ function Products() {
             >
               Add to Cart
             </button>
-
           </div>
         ))}
-
       </div>
     </div>
   );

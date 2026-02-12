@@ -1,54 +1,54 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const API = "https://ecommerce-backend-w1db.onrender.com";
+
 function Orders() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const fetchOrders = async () => {
+      try {
+        const token = localStorage.getItem("token");
 
-    axios
-      .get("https://ecommerce-backend-w1db.onrender.com/api/orders", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => setOrders(res.data))
-      .catch(console.error);
+        const res = await axios.get(`${API}/api/orders`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        setOrders(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchOrders();
   }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
 
-      <h2 className="text-3xl font-bold mb-6">
-        Order History
-      </h2>
+      <h2 className="text-3xl font-bold mb-6">My Orders</h2>
 
       {orders.length === 0 ? (
-        <p>No orders yet</p>
+        <p>No orders found</p>
       ) : (
         orders.map((order) => (
           <div
             key={order._id}
-            className="bg-white p-6 rounded shadow mb-4"
+            className="bg-white p-4 mb-4 rounded shadow"
           >
-            <p className="font-semibold mb-2">
+            <p className="font-semibold">
               Order ID: {order._id}
             </p>
 
-            {order.items.map((item, i) => (
-              <p key={i}>
-                {item.name} × {item.qty}
-              </p>
-            ))}
+            <p>Total: ${order.totalPrice}</p>
 
-            <p className="font-bold mt-2">
-              Total: ${order.total}
+            <p className="text-sm text-gray-600">
+              {new Date(order.createdAt).toLocaleString()}
             </p>
           </div>
         ))
       )}
-
     </div>
   );
 }
