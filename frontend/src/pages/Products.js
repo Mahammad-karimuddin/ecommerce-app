@@ -8,7 +8,7 @@ function Products() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5001/api/products")
+      .get("https://ecommerce-backend-w1db.onrender.com/api/products")
       .then((res) => setProducts(res.data))
       .catch(console.error);
   }, []);

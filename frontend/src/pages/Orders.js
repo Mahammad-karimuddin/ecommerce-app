@@ -8,7 +8,7 @@ function Orders() {
     const token = localStorage.getItem("token");
 
     axios
-      .get("http://127.0.0.1:5001/api/orders", {
+      .get("https://ecommerce-backend-w1db.onrender.com/api/orders", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

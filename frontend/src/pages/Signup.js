@@ -13,7 +13,7 @@ function Signup() {
   const handleSignup = async () => {
     try {
       await axios.post(
-        "http://127.0.0.1:5001/api/users/signup",
+        "https://ecommerce-backend-w1db.onrender.com/api/users/signup",
         { name, email, password }
       );
 

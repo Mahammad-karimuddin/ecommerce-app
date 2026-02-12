@@ -12,7 +12,8 @@ function Login() {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        "http://127.0.0.1:5001/api/users/login",
+        "https://ecommerce-backend-w1db.onrender.com/api/users/login",
+
         { email, password }
       );
 

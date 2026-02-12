@@ -10,7 +10,7 @@ function ProductDetails() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5001/api/products")
+      .get("https://ecommerce-backend-w1db.onrender.com/api/products")
       .then((res) => {
         const found = res.data.find(
           (p) => p._id === id
